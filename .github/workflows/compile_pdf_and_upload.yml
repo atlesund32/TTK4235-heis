@@ -1,0 +1,53 @@
+name: Build LaTeX document and upload
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      - name: Check commit message for version tag
+        id: check_version
+        run: |
+          VERSION=$(echo "${{ github.event.head_commit.message }}" | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" || echo "")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Compile LaTeX document
+        uses: dante-ev/latex-action@latest
+        with:
+          working_directory: Main
+          root_file: main.tex
+
+      - name: Upload PDF file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: PDF
+          path: Main/main.pdf
+
+      - name: Create Release
+        id: create_release
+        if: env.VERSION != ''
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: env.VERSION != ''
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Main/main.pdf
+          asset_name: main.pdf
+          asset_content_type: application/pdf

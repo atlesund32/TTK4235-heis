@@ -1,0 +1,110 @@
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{csquotes}
+\usepackage{algpseudocode}
+\usepackage[style=verbose]{biblatex}
+\usepackage{hyperref}
+
+% generisk tekst
+\usepackage[utf8]{inputenc}
+
+% for hyperlinks
+\usepackage{hyperref}
+
+% grafisk genering av directory
+\usepackage{dirtree}
+
+% library for kode
+\usepackage{listings}
+
+\usepackage{cprotect}% http://ctan.org/pkg/cprotect
+
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\usepackage[parfill]{parskip}
+
+
+\usepackage{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{NTNU_blue}{rgb}{0, 0.3137, 0.6196}
+\definecolor{RWTHrot100}{rgb}{0.800000 0.027451 0.117647}
+
+\definecolor{RWTHblau100}{rgb}{0.000000 0.329412 0.623529}
+ \hypersetup{
+     colorlinks=true,
+     linkcolor=NTNU_blue,
+     filecolor=NTNU_blue,
+     citecolor = NTNU_blue,      
+     urlcolor=NTNU_blue,
+     }
+     
+
+\usepackage{stackengine}
+\usepackage{scalerel}
+\newcommand\dangersign[1][2ex]{%
+  \renewcommand\stacktype{L}%
+  \scaleto{\stackon[1.3pt]{\color{red}$\triangle$}{\tiny !}}{9ex}%
+}
+
+\newsavebox{\fmbox}
+\newenvironment{fmpage}[1]
+{\begin{lrbox}{\fmbox}\begin{minipage}{#1}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\fmbox}}}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{outlines}
+
+
+\usepackage{siunitx}
+\DeclareSIUnit{\pound}{lb}
+\newcounter{alphasect}
+\def\alphainsection{0}
+
+\let\oldsection=\section
+\def\section{%
+  \ifnum\alphainsection=1%
+    \addtocounter{alphasect}{1}
+  \fi%
+\oldsection}%
+
+\renewcommand\thesection{%
+  \ifnum\alphainsection=1% 
+    \Roman{alphasect}
+  \else%
+    \arabic{section}
+  \fi%
+}%
+
+\newenvironment{alphasection}{%
+  \ifnum\alphainsection=1%
+    \errhelp={Let other blocks end at the beginning of the next block.}
+    \errmessage{Nested Alpha section not allowed}
+  \fi%
+  \setcounter{alphasect}{0}
+  \def\alphainsection{1}
+}{%
+  \setcounter{alphasect}{0}
+  \def\alphainsection{0}
+}%

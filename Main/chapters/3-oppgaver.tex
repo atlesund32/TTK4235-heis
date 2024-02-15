@@ -1,0 +1,77 @@
+% \section{Oppgave (100\%) - Heislab med dokumentasjon}\label{sec:3-oppgave}
+
+
+% I denne laben skal dere bruke V-modellen til å utvikle et styringssystem for en heis som følger spesifikasjonene gitt i appendiks \ref{app:FATkrav}. Dere skal bruke UML til design og dokumentasjon av systemet, og selve systemet skal til slutt implementeres i \verb|C|.
+
+% \subsection{Oversikt over hva som skal leveres inn}
+
+% For å få full vurdering av heis-prosjektet, skal dere levere en \verb|.zip|-fil til slutt, som skal ha følgende struktur (NB: gruppenr er ikke det samme som arbeidsplassnummer på sanntidssalen!): \vspace{.25cm}
+
+% \dirtree{%
+% .1 gruppenr.zip.
+% .2 Makefile.
+% .2 Doxygen config.
+% .2 source.
+% .3 .h-filer og .c-filer.
+% .2 rapport.pdf.
+% }
+
+% hvor:
+
+% \subsubsection{Makefile}
+% Makefilen dere leverer inn kan inneholde så mange regler dere vil, men må være i stand til å bygge prosjektet fra filene i mappen \verb|source|. I \verb|skeleton_project| får dere en fungerende \verb|Makefile| som dere kan ekspandere må.
+% \subsubsection{Doxygen config}
+% Dette er konfigurasjonsfilen for Doxygen. Dere kan kalle den hva dere vil, men den må kunne lese gjennom filene i \verb|source|, og bygge dokumentasjon ut fra disse.
+    
+%     Det kreves at alle offentlige APIer skal være dokumentert med kommentarer som Doxygen kan lese. Med offentlige APIer menes alle funksjoner og definerte datatyper som ligger tilgjengelig i headerfilene (\verb|.h|).
+    
+%     Et tips er å starte med å dokumentere kodene i \verb|elevio| før dere begynner å lage store moduler for å forstå grunnfunksjonalitetene bak heisen.
+    
+% \subsubsection{source}
+% I mappen \verb|source| putter dere all kode som er nødvendig for å bygge heisprogrammet. Dette inkluderer utleverte drivere. 
+
+% \subsubsection{rapport.pdf}
+% Det skal skrives en kort rapport (max 5 sider ekskludert eventuelle diagrammer) som dokumenterer design-valg og arbeidet dere har gjort. Denne skal ikke være veldig omfattende, men det er hovedsaklig denne som bestemmer dokumentasjons-scoren i heisprosjektet. Her er det viktig at dere skriver med eventuell kunde i bakhodet. 
+    
+%     Rapporten skal \textit{speile} V-modellen og skal inneholde følgende seksjoner:
+    
+%     \begin{itemize}
+%         \item \textbf{Overordnet arkitektur}: Beskriver styresystemet sin arkitektur på et høyt nivå. Denne seksjonen skal inneholde et \textbf{klasse-diagram} som viser hver av modulene som inngår i designet, og hvilke relasjoner som finnes mellom dem.
+        
+%         For å illustrere hvordan de forskjellige modulene fungerer sammen, skal denne seksjonen også inneholde et \textbf{sekvensdiagram} som viser denne sekvensen:
+        
+%         \begin{enumerate}
+%             \item Heisen står stille i 2. etasje med døren lukket.
+%             \item En person bestiller heisen fra 1. etasje.
+%             \item Når heisen ankommer går personen inn i heisen og bestiller 4. etasje.
+%             \item Heisen ankommer 4. etasje, og personen går av.
+%             \item Etter 3 sekunder lukker dørene til heisen seg.
+%         \end{enumerate}
+        
+%         Utover dette skal denne seksjonen også ha et \textbf{tilstandsdiagram} som viser hvordan heisen oppfører seg basert på hvilke input som kommer inn, og hvilke output heisen selv setter.
+        
+%         Til slutt skal dere argumentere for hvorfor deres arkitekturvalg har noe for seg. Prøv å ikke overkompliser argumentasjonen; dere trenger trenger ikke å komme på argumenter som ingen andre har tenkt på før, men dere må vise at dere har tenkt gjennom valgene dere har gjort på en fornuftig måte.
+        
+%         \item \textbf{Moduldesign}: Her går dere kort over modulene deres i mer detalj. Dere skal argumentere for implementasjonsvalg av interesse. Om dere for eksempel lagde en kømodul som bruker lenkede lister, så er dette en interessant implementasjonsdetalj. Argumentasjonen bør fokusere på hva som gir \textit{minst hodebry} for andre utviklere. 
+        
+%         \textbf{Eksempelvis} er det ikke interessant med: \textit{Vi bruker lenkede lister fordi de teoretisk kan oppføre seg raskere enn dynamiske arrays, om man må gjøre mye innsettinger}. Hastighet er \textit{nesten} irrelevant ettersom vi skriver i \verb|C|, hvor det meste går fort nok uansett.
+        
+%         Et \textbf{eksempel} på bedre argumentasjon er: \textit{Tidsbiblioteket vårt lagrer verdien på tiden selv. I dette tilfellet er dette et lurt valg, fordi vi kun trenger en timer, så det er ingen fare for kollisjoner i tidsstempling. I tillegg til dette slipper moduler som kaller tidsbiblioteket å huske på tiden mellom hvert kall, som ellers ville ført til tettere kobling mellom modulene}.
+        
+%         Viktig her er at dere ikke skal beskrive hva dere har gjort, men hvorfor! 
+        
+%         \item \textbf{Testing}: Dere står fritt til å dele opp denne seksjonen i enhetstesting- og integrasjonstesting om dere har forskjellige fremgangsmåter for dem. Uansett skal denne seksjonen overbevise leseren om at heisen faktisk fungerer. Dere skal beskrive hvorfor dere har tro på at dere har oppfylt kravene i spesifikasjonen.
+        
+%         \textbf{Eksempel}: \textit{For å teste køsystemet kjørte vi det gjennom GDB, hvor vi satte- og fjernet bestillinger mens vi sammenlignet med forventet oppførsel}.
+        
+%         I tillegg bør dere også inkludere deres egen testprosedyre for systemet, for \textbf{eksempel}: \textit{Vi starter heisen mellom to etasjer, og ser at den kjører ned til etasjen under. Dette sikerer at heisen er i en definert tilstand, og sikrer dermed at punkt 01 er tilfredsstilt}.
+        
+%         \item \textbf{Diskusjon}: Dere kommer sannsynligvis til å oppdage svakheter i deres egen implementasjon. Her skal dere prøve å identifisere slike aspekter, og forklare hvordan systemet kan omdesignes og forbedres.
+        
+%         I tillegg er det også viktig å spekulere i andre valg dere kunne ha tatt i løpet av prosjektet, og hvilke betydninger det ville ha fått for arkitektur, implementasjon, testing, vedlikeholdbarhet, etc. 
+        
+%         God diskusjon kan gjøre opp for små ting som ellers ville gitt et negativt inntrykk fra arkitekturfasen, så lenge det finnes gode grunner for at dere endte opp med valgene dere gjorde.
+        
+%         \textbf{Eksempel}: \textit{Måten køsystemet husker bestillinger på viste seg å være mer komplisert enn nødvendig. Allikevel mener vi at køsystemet har et minimalt grensesnitt mot resten av programmet, og har lav grad av kobling til de andre delene programmet består av. I fremtiden betyr dette at innmaten til køsystemet kan skrives om uten at resten av programmet må endre seg nevneverdig. På denne måten argumenterer vi for at køsystemets kompleksitet er begrenset til kun seg selv, og derfor ikke reduserer den helhetlige kvaliteten til programmet på en måte som lett smitter andre moduler}.
+%     \end{itemize}
+% \clearpage
