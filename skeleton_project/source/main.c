@@ -6,10 +6,11 @@
 
 int main(){
     elevio_init();
-
+    elevio_stopLamp(0);
     printf("\n----------Test elevator----------\n\n");
     printf("Press the stop button on the elevator panel to exit\n");
     elevio_motorDirection(DIRN_DOWN); //hvilken vei motoren beveger seg
+
     
     while(1){
 
@@ -19,9 +20,16 @@ int main(){
             elevio_motorDirection(DIRN_STOP);
         }
 
-
+        for(int f = 0; f < N_FLOORS; f++){ // f=floor
+            for(int b = 0; b < N_BUTTONS; b++){ // b=button
+                int btnPressed = elevio_callButton(f, b); //btnPressed er knappen som blir trykket på
+                elevio_buttonLamp(f, b, btnPressed); //lampen lyser
+                elevio_doorOpenLamp(0);
+            }
+        }
 
         if(elevio_stopButton()){
+            
             elevio_motorDirection(DIRN_STOP);
             break;
         }
