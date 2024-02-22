@@ -12,6 +12,7 @@
 static int sockfd;
 static pthread_mutex_t sockmtx;
 
+//Setter opp forbindelse til heisserveren
 void elevio_init(void){
     char ip[16] = "localhost";
     char port[8] = "15657";
@@ -43,13 +44,18 @@ void elevio_init(void){
 
 
 
-
+//Setter motorretning
 void elevio_motorDirection(MotorDirection dirn){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){1, dirn}, 4, 0);
     pthread_mutex_unlock(&sockmtx);
 }
 
+//Setter knappelyset
+//floor = hvilken etasje lyset skal settes i
+//button = hvilken knapp lyset skal settes på
+//value = 1 setter på lyset
+//value = 0 setter av lyset
 
 void elevio_buttonLamp(int floor, ButtonType button, int value){
     assert(floor >= 0);
@@ -62,7 +68,17 @@ void elevio_buttonLamp(int floor, ButtonType button, int value){
     pthread_mutex_unlock(&sockmtx);
 }
 
-
+//Setter etasjelyset
+//floor = hvilken etasje lyset skal settes i
+//value = 1 setter på lyset
+//value = 0 setter av lyset
+//value = 2 setter av lyset og døren åpen
+//value = 3 setter av lyset og døren lukket
+//value = 4 setter av lyset og døren i bevegelse
+//value = 5 setter av lyset og heisen i nødstopp
+//value = 6 setter av lyset og heisen i nødstopp og døren åpen
+//value = 7 setter av lyset og heisen i nødstopp og døren lukket
+//value = 8 setter av lyset og heisen i nødstopp og døren i bevegelse
 void elevio_floorIndicator(int floor){
     assert(floor >= 0);
     assert(floor < N_FLOORS);
@@ -72,14 +88,24 @@ void elevio_floorIndicator(int floor){
     pthread_mutex_unlock(&sockmtx);
 }
 
-
+//Setter dørlampen
+//value = 1 setter på dørlampen
+//value = 0 setter av dørlampen
+//value = 2 setter av dørlampen og døren åpen
+//value = 3 setter av dørlampen og døren lukket
+//value = 4 setter av dørlampen og døren i bevegelse
 void elevio_doorOpenLamp(int value){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){4, value}, 4, 0);
     pthread_mutex_unlock(&sockmtx);
 }
 
-
+//Setter stopplampen
+//value = 1 setter på stopplampen
+//value = 0 setter av stopplampen
+//value = 2 setter av stopplampen og døren åpen
+//value = 3 setter av stopplampen og døren lukket
+//value = 4 setter av stopplampen og døren i bevegelse
 void elevio_stopLamp(int value){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){5, value}, 4, 0);
@@ -88,7 +114,8 @@ void elevio_stopLamp(int value){
 
 
 
-
+//Gir oss om en knapp er trykket inn
+//Returnerer 1 hvis knappen er trykket inn, 0 hvis ikke
 int elevio_callButton(int floor, ButtonType button){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){6, button, floor}, 4, 0);
@@ -98,7 +125,8 @@ int elevio_callButton(int floor, ButtonType button){
     return buf[1];
 }
 
-
+//Gir oss hvilken etasje heisen er i
+//Returnerer -1 hvis heisen er mellom to etasjer
 int elevio_floorSensor(void){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){7}, 4, 0);
@@ -108,7 +136,8 @@ int elevio_floorSensor(void){
     return buf[1] ? buf[2] : -1;
 }
 
-
+//Gir oss om stoppknappen er trykket inn
+//Returnerer 1 hvis stoppknappen er trykket inn, 0 hvis ikke
 int elevio_stopButton(void){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){8}, 4, 0);
@@ -118,6 +147,12 @@ int elevio_stopButton(void){
     return buf[1];
 }
 
+//Gir oss om heisen er i nødstopp
+//Returnerer 1 hvis heisen er i nødstopp, 0 hvis ikke
+//Returnerer -1 hvis det er en feil
+//Returnerer 2 hvis heisen er i nødstopp og døren er åpen
+//Returnerer 3 hvis heisen er i nødstopp og døren er lukket
+//Returnerer 4 hvis heisen er i nødstopp og døren er i bevegelse
 
 int elevio_obstruction(void){
     pthread_mutex_lock(&sockmtx);
