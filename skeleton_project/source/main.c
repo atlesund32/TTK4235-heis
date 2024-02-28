@@ -3,6 +3,7 @@
 #include <signal.h>
 #include <time.h>
 #include "driver/elevio.h"
+#include "elevator.h"
 
 int main(){
     elevio_init();
@@ -11,28 +12,23 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
     elevio_motorDirection(DIRN_DOWN); //hvilken vei motoren beveger seg
 
-    
-    while(1){
+    elevio_motorDirection(DIRN_UP);
+    Elevator myElevator;
+    elevator_init(&myElevator, 0);
 
-        //The elevator goes down and stops at a floor if i between floors at start
+    while(1){
+        //get floor
         int floor = elevio_floorSensor();
+
+        //if the elevator is at a floor, stop the motor
         if(floor != -1){
             elevio_motorDirection(DIRN_STOP);
+            myElevator.last_floor = floor;
         }
 
-        for(int f = 0; f < N_FLOORS; f++){ // f=floor
-            for(int b = 0; b < N_BUTTONS; b++){ // b=button
-                int btnPressed = elevio_callButton(f, b); //btnPressed er knappen som blir trykket på
-                elevio_buttonLamp(f, b, btnPressed); //lampen lyser
-                elevio_doorOpenLamp(0);
-            }
-        }
 
-        if(elevio_stopButton()){
-            
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
+        //the elevator will stop and wait for 20 ms before checking again
+        nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
 
     return 0;
