@@ -3,7 +3,6 @@
 #include <signal.h>
 #include <time.h>
 #include "driver/elevio.h"
-#include "elevator.h"
 
 
 
@@ -14,7 +13,6 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
 
     elevio_motorDirection(DIRN_UP);
-    Elevator myElevator;
 
     while(1){
         int floor = elevio_floorSensor();
@@ -24,7 +22,7 @@ int main(){
             elevio_motorDirection(DIRN_STOP);
         }
 
-        
+        //I want to listen to button presses and send the elevator to the floor that was pressed
         
 
 
