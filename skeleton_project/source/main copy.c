@@ -14,6 +14,7 @@ int main(){
 
     elevio_motorDirection(DIRN_UP);
 
+
     while(1){
         int floor = elevio_floorSensor();
 
@@ -22,7 +23,7 @@ int main(){
             elevio_motorDirection(DIRN_STOP);
         }
 
-        //I want to listen to button presses and send the elevator to the floor that was pressed
+        
         
 
 

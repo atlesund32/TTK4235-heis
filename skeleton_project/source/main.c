@@ -15,36 +15,21 @@ int main(){
 
     elevio_motorDirection(DIRN_UP);
     Elevator myElevator;
+    elevator_init(&myElevator, 0);
 
     while(1){
+        //get floor
         int floor = elevio_floorSensor();
 
-        
+        //if the elevator is at a floor, stop the motor
         if(floor != -1){
             elevio_motorDirection(DIRN_STOP);
+            myElevator.last_floor = floor;
         }
 
-        
-        
+        //
 
 
-        for(int f = 0; f < N_FLOORS; f++){
-            for(int b = 0; b < N_BUTTONS; b++){
-                int btnPressed = elevio_callButton(f, b);
-                elevio_buttonLamp(f, b, btnPressed);
-            }
-        }
-
-        if(elevio_obstruction()){
-            elevio_stopLamp(1);
-        } else {
-            elevio_stopLamp(0);
-        }
-        
-        if(elevio_stopButton()){
-            elevio_motorDirection(DIRN_STOP);
-            break;
-        }
         //the elevator will stop and wait for 20 ms before checking again
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
