@@ -20,6 +20,7 @@ int main(){
 
         
         if(floor != -1){
+
             elevio_motorDirection(DIRN_STOP);
         }
 
@@ -50,3 +51,10 @@ int main(){
 
     return 0;
 }
+
+
+        // //if the elevator is at a floor, stop the motor
+        // if(floor != -1){    
+        //     elevio_motorDirection(DIRN_STOP);
+        //     myElevator.last_floor = floor;
+        // }

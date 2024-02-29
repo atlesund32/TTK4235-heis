@@ -1,4 +1,4 @@
-#include <assert.h>
+    #include <assert.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -105,7 +105,6 @@ void elevio_doorOpenLamp(int value){
 //value = 0 setter av stopplampen
 //value = 2 setter av stopplampen og døren åpen
 //value = 3 setter av stopplampen og døren lukket
-//value = 4 setter av stopplampen og døren i bevegelse
 void elevio_stopLamp(int value){
     pthread_mutex_lock(&sockmtx);
     send(sockfd, (char[4]){5, value}, 4, 0);

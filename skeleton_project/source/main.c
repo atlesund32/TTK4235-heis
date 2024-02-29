@@ -10,22 +10,38 @@ int main(){
     elevio_stopLamp(0);
     printf("\n----------Test elevator----------\n\n");
     printf("Press the stop button on the elevator panel to exit\n");
-    elevio_motorDirection(DIRN_DOWN); //hvilken vei motoren beveger seg
 
-    elevio_motorDirection(DIRN_UP);
+
     Elevator myElevator;
     elevator_init(&myElevator, 0);
 
-    while(1){
-        //get floor
-        int floor = elevio_floorSensor();
+    myElevator.floor = elevio_floorSensor();
 
-        //if the elevator is at a floor, stop the motor
-        if(floor != -1){
-            elevio_motorDirection(DIRN_STOP);
-            myElevator.last_floor = floor;
+    while(elevio_floorSensor() == -1){
+        //wait for the elevator to reach a floor
+        elevio_motorDirection(DIRN_DOWN);
+    }
+    elevio_motorDirection(DIRN_STOP);
+    myElevator.floor = elevio_floorSensor();
+
+
+    while(1){
+
+        for(int f = 0; f < N_FLOORS; f++){
+            for(int b = 0; b < N_BUTTONS; b++){
+                int btnPressed = elevio_callButton(f, b);
+                elevio_buttonLamp(f, b, btnPressed);
+                myElevator.requests[f][b] = btnPressed;
+            }
         }
 
+
+
+
+        if(elevio_stopButton()){
+            elevio_motorDirection(DIRN_STOP);
+            break;
+        }
 
         //the elevator will stop and wait for 20 ms before checking again
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
@@ -33,46 +49,3 @@ int main(){
 
     return 0;
 }
-
-// int main(){
-//     elevio_init(); //initialiserer heisen
-    
-//     printf("=== Example Program ===\n");
-//     printf("Press the stop button on the elevator panel to exit\n");
-//     elevio_motorDirection(DIRN_DOWN); //hvilken vei motoren beveger seg
-
-//     while(1){
-//         int floor = elevio_floorSensor(); //setter floor til der heisen befinner seg. Om heisen er i mellom to etg viser den (-1)
-
-//         if(floor == 0){
-//             elevio_motorDirection(DIRN_UP); //heisen går opp om i bånn etg
-//         }
-
-//         if(floor == N_FLOORS-1){
-//             elevio_motorDirection(DIRN_DOWN); //heisen går ned om i topp etg
-//         }
-
-
-//         for(int f = 0; f < N_FLOORS; f++){ // f=floor
-//             for(int b = 0; b < N_BUTTONS; b++){ // b=button
-//                 int btnPressed = elevio_callButton(f, b); //btnPressed er knappen som blir trykket på
-//                 elevio_buttonLamp(f, b, btnPressed); //lampen lyser
-//             }
-//         }
-
-//         if(elevio_obstruction()){
-//             elevio_stopLamp(1); //stoplampen lyser om obstruksjon
-//         } else {
-//             elevio_stopLamp(0);
-//         }
-        
-//         if(elevio_stopButton()){
-//             elevio_motorDirection(DIRN_STOP);
-//             break;
-//         }
-        
-//         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
-//     }
-
-//     return 0;
-// }

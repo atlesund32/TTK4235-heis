@@ -1,12 +1,22 @@
 #ifndef ELEVATOR_H //forhindrer dobbelt inkludering
-#define ELEVATOR_H
-#include <stdbool.h>
 
 typedef struct {
     int destination;
-    bool moving;
+    int moving;
     int last_floor;
+    array_t orders[N_FLOORS][N_BUTTONS]; //hall up. hall down, cab
 } Elevator;
+
+
+// orders[
+//     [0, 0, 0],
+//     [0, 0, 0],
+//     [0, 0, 0],
+//     [0, 0, 0]
+//] 
+
+
+
 
 void elevator_init(Elevator* elevator, int start_floor);
 
