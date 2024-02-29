@@ -15,14 +15,14 @@ int main(){
     Elevator myElevator;
     elevator_init(&myElevator, 0);
 
-    myElevator.floor = elevio_floorSensor();
+    myElevator.last_floor = elevio_floorSensor();
 
     while(elevio_floorSensor() == -1){
         //wait for the elevator to reach a floor
         elevio_motorDirection(DIRN_DOWN);
     }
     elevio_motorDirection(DIRN_STOP);
-    myElevator.floor = elevio_floorSensor();
+    myElevator.last_floor = elevio_floorSensor();
 
 
     while(1){
@@ -31,9 +31,18 @@ int main(){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 elevio_buttonLamp(f, b, btnPressed);
-                myElevator.requests[f][b] = btnPressed;
+                myElevator.orders[f][b] = btnPressed;
             }
         }
+
+
+        // for(int f = 0; f < N_FLOORS; f++){
+        //     for(int b = 0; b < N_BUTTONS; b++){
+        //         if(myElevator.requests[f][b]){
+                    
+        //         }
+        //     }
+        // }
 
 
 
