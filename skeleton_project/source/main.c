@@ -19,16 +19,16 @@ int main(){
 
     elevio_motorDirection(DIRN_STOP);
     Elevator myElevator;
-    elevator_init(&myElevator, elevio_floorSensor(), elevio_floorSensor());
+    elevator_init(&myElevator, elevio_floorSensor(), -1);
 
     while(1){
         //update the last floor
         elevator_last_floor(&myElevator);
 
-        //run elevetor to its destination
-        elevator_go_to_destination(myElevator.destination, myElevator.last_floor);
+        //run elevator to its destination if it has one. Turn destination to -1 if destination is reached
+        elevator_go_to_destination(&myElevator);
 
-        //update the orders
+        //update the orders (read inputs)
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
@@ -40,8 +40,17 @@ int main(){
             }
         }
 
-        //logic for the elevator to take the orders
+        // Update destination from hall- and cab orders. Cab orders have higher priority
+        if(myElevator.destination == -1){
+            updateELevatorDestination(&myElevator);
+        }
+
         
+        //if the elevator is at a floor and the floor has an order, the elevator will stop
+
+        if(elevio_floorSensor() != -1){
+            checkFloorOrders(&myElevator, elevio_floorSensor());
+        }
 
         //if the elevator reaches a destination, remove the destination from the orders
         

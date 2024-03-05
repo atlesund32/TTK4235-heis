@@ -7,6 +7,7 @@ typedef struct {
     int moving;
     int last_floor;
     int orders[N_FLOORS][N_BUTTONS]; //hall up. hall down, cab
+    int door_open;
 } Elevator;
 
 
@@ -22,5 +23,6 @@ typedef struct {
 
 void elevator_init(Elevator* elevator, int start_floor, int dest);
 
+void updateELevatorDestination(Elevator* myElevator);
 
 #endif
