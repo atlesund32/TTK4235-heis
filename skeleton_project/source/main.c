@@ -5,6 +5,7 @@
 #include "driver/elevio.h"
 #include "driver/elevator.h"
 #include "driver/queue.h"
+#include "driver/door.h"
 
 int main(){
     elevio_init();
@@ -17,16 +18,18 @@ int main(){
         elevio_motorDirection(DIRN_DOWN);
     }
 
+
     elevio_motorDirection(DIRN_STOP);
     Elevator myElevator;
     elevator_init(&myElevator, elevio_floorSensor(), -1);
 
+    int timer_started = 0; // 0 = timer not started, 1 = timer started
+    int timer = 0; //timer in seconds
+
     while(1){
         //update the last floor
+        //Controls the last_floor of the object
         elevator_last_floor(&myElevator);
-
-        //run elevator to its destination if it has one. Turn destination to -1 if destination is reached
-        elevator_go_to_destination(&myElevator);
 
         //update the orders (read inputs)
         for(int f = 0; f < N_FLOORS; f++){
@@ -41,19 +44,38 @@ int main(){
         }
 
         // Update destination from hall- and cab orders. Cab orders have higher priority
+        // Controls the destination of the elevator object
         if(myElevator.destination == -1){
-            updateELevatorDestination(&myElevator);
+            updateElevatorDestination(&myElevator);
         }
 
-        
-        //if the elevator is at a floor and the floor has an order, the elevator will stop
+        // Run elevator to its destination if it has one. Doesn't react if destination is -1
+        // Controls the motor direction of the elevator object
+        elevator_go_to_destination(&myElevator);
 
+        
+        //if the elevator is at a floor and the floor has an order in the same direction, the elevator will stop
         if(elevio_floorSensor() != -1){
-            checkFloorOrders(&myElevator, elevio_floorSensor());
+            checkIntermediateStops(&myElevator, elevio_floorSensor(), &timer_started, &timer);
         }
 
         //if the elevator reaches a destination, remove the destination from the orders
         
+        //Door functionality
+        //NOTE TO SELF: door lamp should only be on while doing an order, not at start or end
+        //Controls door lamp and timer
+        if(myElevator.destination == myElevator.last_floor && timer_started == 0 && myElevator.door_obstruction == 0){
+            door_open(&myElevator, &timer_started, &timer);
+        }
+        if(timer_started == 1 && (time(NULL) - timer >= 3)){
+            door_close(&myElevator, &timer_started, &timer);
+        }
+        if(myElevator.door_open == 1 && elevio_obstruction() == 1){
+            door_obstruction(&myElevator, &timer_started, &timer);
+        }
+        else{
+            myElevator.door_obstruction = 0;
+        }
 
         //if the stop button is pressed, the elevator will stop
         if(elevio_stopButton()){

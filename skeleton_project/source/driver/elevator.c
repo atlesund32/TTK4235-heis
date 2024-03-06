@@ -1,7 +1,5 @@
 #include "elevator.h"
-
-
-
+#include "elevio.h"
 void elevator_init(Elevator* myElevator, int start_floor, int dest){
     myElevator->destination = dest;
     myElevator->moving = 0;
@@ -35,7 +33,7 @@ void updateElevatorDestination(Elevator* myElevator) {
     }
 
     // If there was no cab order, serve hall orders. The following logic is the same as the cab order logic
-    if (destinationFloor == -1) {
+    else if (destinationFloor == -1) {
         for(int f = 0; f < N_FLOORS; f++) {
             for(int b = 0; b < N_BUTTONS; b++) {
 
@@ -57,7 +55,7 @@ void updateElevatorDestination(Elevator* myElevator) {
         if(destinationFloor != -1 && buttonNumber != -1) {
                 myElevator->destination = destinationFloor;
                 myElevator->orders[destinationFloor][buttonNumber] = 0; // Clears
-            }
+        }
     }
 }
 

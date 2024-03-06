@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "con_load.h": "c"
+        "con_load.h": "c",
+        "elevator.h": "c"
     }
 }

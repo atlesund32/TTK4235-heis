@@ -17,5 +17,5 @@
 void elevator_go_to_destination(Elevator* myElevator);
 void elevator_stop_destination(int destination, int last_floor);
 void elevator_last_floor(Elevator* myElevator);
-void checkFloorOrders(Elevator* myElevator, int floor);
+void checkIntermediateStops(Elevator* myElevator, int floor, int* timer_started, time_t* timer);
 // void queue_init(Queue* queue);
