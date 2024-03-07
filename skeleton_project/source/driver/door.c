@@ -2,7 +2,6 @@
 #include "elevio.h"
 #include <stdlib.h>
 #include <signal.h>
-#include <time.h>
 #include "elevator.h"
 
 //door functionality
@@ -20,7 +19,7 @@ void door_close(Elevator* myElevator, int* timer_started, time_t* timer){
     *timer_started = 0; //stop timer
     if(elevio_floorSensor() == myElevator->destination){
         myElevator->destination = -1; //reset destination
-        updateElevatorDestination(&myElevator); //update the destination
+        updateElevatorDestination(myElevator); //update the destination
     }
 }
 

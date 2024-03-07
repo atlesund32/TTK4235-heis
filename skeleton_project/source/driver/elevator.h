@@ -1,6 +1,7 @@
 #pragma once
 #ifndef ELEVATOR_H //forhindrer dobbelt inkludering
 #include "elevio.h"
+#include "elevator.h"
 
 typedef struct {
     int destination;

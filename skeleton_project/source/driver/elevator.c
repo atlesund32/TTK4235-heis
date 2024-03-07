@@ -1,9 +1,16 @@
 #include "elevator.h"
 #include "elevio.h"
+#include <stdlib.h>
 void elevator_init(Elevator* myElevator, int start_floor, int dest){
     myElevator->destination = dest;
     myElevator->moving = 0;
     myElevator->last_floor = start_floor;
+
+    for(int i = 0; i < N_FLOORS; i++) {
+        for(int j = 0; j < N_BUTTONS; j++) {
+            myElevator->orders[i][j] = 0;
+        }
+    }
 
 }
 

@@ -24,7 +24,7 @@ int main(){
     elevator_init(&myElevator, elevio_floorSensor(), -1);
 
     int timer_started = 0; // 0 = timer not started, 1 = timer started
-    int timer = 0; //timer in seconds
+    time_t timer = 0; //timer in seconds
 
     while(1){
         //update the last floor

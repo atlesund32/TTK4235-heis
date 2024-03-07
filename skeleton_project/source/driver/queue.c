@@ -9,15 +9,15 @@ void elevator_go_to_destination(Elevator* myElevator){
     if(myElevator->destination == -1){
         return;
     } else{
-        if(myElevator->destination > myElevator->last_floor){
+        if(myElevator->destination > myElevator->last_floor && myElevator->destination != -1){
             elevio_motorDirection(DIRN_UP);
             myElevator->moving = 0;
         }
-        else if(myElevator->destination < myElevator->last_floor){
+        else if(myElevator->destination < myElevator->last_floor && myElevator->destination != -1){
             elevio_motorDirection(DIRN_DOWN);
             myElevator->moving = 1;
         }
-        else if(myElevator->destination == myElevator->last_floor){
+        else if(myElevator->destination == myElevator->last_floor && myElevator->destination != -1){
             elevio_motorDirection(DIRN_STOP);
             myElevator->destination = -1;
             myElevator->moving = 2;
@@ -46,15 +46,15 @@ void checkIntermediateStops(Elevator* myElevator, int floor, int* timer_started,
         if(myElevator->orders[floor][b] && timer_started == 0 && timer == 0){
             //Another if statement to check if the elevator is moving in the same direction as the person wants to go
             if((myElevator->moving == 0 )&& b == 0){
-                door_open(&myElevator, timer_started, timer);
+                door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
             }
             else if((myElevator->moving == 1) && b == 1){ 
-                door_open(&myElevator, timer_started, timer);
+                door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
             }
             if(b == 2){
-                door_open(&myElevator, timer_started, timer);
+                door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
                 
             }
