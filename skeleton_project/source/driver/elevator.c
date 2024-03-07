@@ -1,7 +1,8 @@
 #include "elevator.h"
 #include "elevio.h"
 #include <stdlib.h>
-void elevator_init(Elevator* myElevator, int start_floor, int dest){
+void elevator_init(Elevator* myElevator, int start_floor, int dest, int d_o){
+    myElevator->door_open = d_o;
     myElevator->destination = dest;
     myElevator->moving = 0;
     myElevator->last_floor = start_floor;

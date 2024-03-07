@@ -23,7 +23,7 @@ typedef struct {
 
 
 
-void elevator_init(Elevator* elevator, int start_floor, int dest);
+void elevator_init(Elevator* elevator, int start_floor, int dest, int d_o);
 
 void updateElevatorDestination(Elevator* myElevator);
 
