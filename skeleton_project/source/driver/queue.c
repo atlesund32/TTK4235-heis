@@ -20,6 +20,7 @@ void elevator_go_to_destination(Elevator* myElevator){
         else if(myElevator->destination == myElevator->last_floor){
             elevio_motorDirection(DIRN_STOP);
             myElevator->moving = 2;
+            
         }
     }
 
@@ -41,18 +42,24 @@ void elevator_last_floor(Elevator* myElevator){
 
 
 void checkIntermediateStops(Elevator* myElevator, int floor, int* timer_started, time_t* timer){
+    
     for(int b=0; b<N_BUTTONS; b++){
+        
         if(myElevator->orders[floor][b] && timer_started == 0){
+    
             //Another if statement to check if the elevator is moving in the same direction as the person wants to go
             if((myElevator->moving == 0 )&& b == 0){
+                printf("Comes from Intermediatestops\n");
                 door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
             }
             else if((myElevator->moving == 1) && b == 1){ 
+                printf("Comes from Intermediatestops\n");
                 door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
             }
             if(b == 2){
+                printf("Comes from Intermediatestops\n");
                 door_open(myElevator, timer_started, timer);
                 myElevator->orders[floor][b] = 0;
                 

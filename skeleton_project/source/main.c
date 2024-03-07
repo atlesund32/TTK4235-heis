@@ -47,6 +47,7 @@ int main(){
         // Update destination from hall- and cab orders. Cab orders have higher priority
         // Controls the destination of the elevator object
         if(myElevator.destination == -1){
+            
             updateElevatorDestination(&myElevator);
         }
         elevator_last_floor(&myElevator);
@@ -61,26 +62,27 @@ int main(){
         }
 
         //if the elevator reaches a destination, remove the destination from the orders
-        
+        elevator_last_floor(&myElevator);
         //Door functionality
         //NOTE TO SELF: door lamp should only be on while doing an order, not at start or end
         //Controls door lamp and timer
-        if((timer_started == 1) && (time(NULL) - timer >= 3)){
-            door_close(&myElevator, &timer_started, &timer);
-        }
-        else if((myElevator.destination == myElevator.last_floor) && 
-        (timer_started == 0) && 
-        (myElevator.door_obstruction == 0) && 
-        (myElevator.door_open == 0)){
+        if(timer_started == 1) {
+            if((time(NULL) - timer) >= 3 && (!elevio_obstruction()) && (myElevator.door_obstruction == 0)) {
+                
+                door_close(&myElevator, &timer_started, &timer);
+            } else if(elevio_obstruction()) {
+                myElevator.door_obstruction = 1;
+                timer = time(NULL);
+            }
+        } else if((myElevator.destination == myElevator.last_floor) && !myElevator.door_open) {
+
             door_open(&myElevator, &timer_started, &timer);
         }
-        if((myElevator.door_open == 1) && (elevio_obstruction() == 1)){
-            door_obstruction(&myElevator, &timer_started, &timer);
-
-        }
-        else if{
+        if(myElevator.door_open == 0 || !elevio_obstruction()) {
             myElevator.door_obstruction = 0;
         }
+
+       
 
         //if the stop button is pressed, the elevator will stop
         if(elevio_stopButton()){

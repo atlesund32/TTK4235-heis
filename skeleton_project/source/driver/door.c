@@ -17,10 +17,12 @@ void door_close(Elevator* myElevator, int* timer_started, time_t* timer){
     myElevator->door_open = 0; //sets the door as closed
     *timer = time(NULL); //start the timer
     *timer_started = 0; //stop timer
-    if(elevio_floorSensor() == myElevator->destination){
+    int temp_floor = elevio_floorSensor();
+    if(temp_floor == myElevator->destination){
         myElevator->destination = -1; //reset destination
         updateElevatorDestination(myElevator); //update the destination
     }
+    
 }
 
 void door_obstruction(Elevator* myElevator, int* timer_started, time_t* timer){

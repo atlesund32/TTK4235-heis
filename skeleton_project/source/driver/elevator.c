@@ -4,7 +4,7 @@
 void elevator_init(Elevator* myElevator, int start_floor, int dest, int d_o){
     myElevator->door_open = d_o;
     myElevator->destination = dest;
-    myElevator->moving = 0;
+    myElevator->moving = 2;
     myElevator->last_floor = start_floor;
 
     for(int i = 0; i < N_FLOORS; i++) {
