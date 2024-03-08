@@ -1,0 +1,8 @@
+Jeg har funnet ut at dobbeltblinkproblemet er på grunn av følgende:
+
+Når programmet henter orderen fra for loopen, klarer den å oppdatere destinasjon, altså fjerne det fra order arrayet
+for så å legge det til igjen i order arrayet. Da sitter vi igjen med en duplikat vi ikke ønsker. 
+
+Løsninger:
+
+1: fjerne orderen fra ordersarrayet
