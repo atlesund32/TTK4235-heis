@@ -12,6 +12,7 @@ void elevator_go_to_destination(Elevator* myElevator, int* timer_started){
     if(myElevator->destination == -1){
         return;
     } else{
+        elevator_last_floor(myElevator);
         if((myElevator->destination > myElevator->last_floor) && (*timer_started == 0)){
             elevio_motorDirection(DIRN_UP);
             myElevator->moving = 0;
@@ -20,11 +21,7 @@ void elevator_go_to_destination(Elevator* myElevator, int* timer_started){
             elevio_motorDirection(DIRN_DOWN);
             myElevator->moving = 1;
         }
-        else if((myElevator->destination == myElevator->last_floor) && (*timer_started == 0)){
-            elevio_motorDirection(DIRN_STOP);
-            myElevator->moving = 2;
-            
-        }
+
     }
 
 }

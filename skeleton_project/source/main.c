@@ -39,8 +39,9 @@ int main(){
                 if(btnPressed){
                     myElevator.orders[f][b] = btnPressed;
                     elevio_buttonLamp(f, b, btnPressed);
-                    printf("Button pressed: floor: %d, button %d\n", f, b);
-                    printf("Moving direction: %d\n", myElevator.moving);
+                    printf("floor: %d, button %d, moving: %d\n", f, b, myElevator.moving);
+                    nanosleep(&(struct timespec){0, 10*1000*1000}, NULL);
+                    
                 }
                 
             }
@@ -49,11 +50,11 @@ int main(){
         // Update destination from hall- and cab orders. Cab orders have higher priority
         // Controls the destination of the elevator object
         if(myElevator.destination == -1){
-            
             updateElevatorDestination(&myElevator);
         }
         // Run elevator to its destination if it has one. Doesn't react if destination is -1
         // Controls the motor direction of the elevator object
+        elevator_last_floor(&myElevator);
         elevator_go_to_destination(&myElevator, &timer_started);
 
         int temp_floor = elevio_floorSensor();
@@ -68,20 +69,12 @@ int main(){
         //Door functionality
         //NOTE TO SELF: door lamp should only be on while doing an order, not at start or end
         //Controls door lamp and timer
-        if(timer_started == 1) {
-            if((time(NULL) - timer) >= 3 && (!elevio_obstruction()) && (myElevator.door_obstruction == 0)) {
-                
-                door_close(&myElevator, &timer_started, &timer);
-            } else if(elevio_obstruction()) {
-                myElevator.door_obstruction = 1;
-                timer = time(NULL);
-            }
-        } else if((myElevator.destination == myElevator.last_floor) && !myElevator.door_open) {
-
-            door_open(&myElevator, &timer_started, &timer);
+        if(timer_started && (time(NULL) - timer) >= 3) {
+            door_close(&myElevator, &timer_started, &timer);
         }
-        if(myElevator.door_open == 0 || !elevio_obstruction()) {
-            myElevator.door_obstruction = 0;
+        if((myElevator.destination == myElevator.last_floor) && (myElevator.door_open == 0) && (timer_started == 0)) {
+            printf("This is the destination\n");
+            door_open(&myElevator, &timer_started, &timer);
         }
 
        

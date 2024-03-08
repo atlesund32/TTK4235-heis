@@ -1,6 +1,7 @@
 #include "elevator.h"
 #include "elevio.h"
 #include <stdlib.h>
+#include <stdio.h>
 void elevator_init(Elevator* myElevator, int start_floor, int dest, int d_o){
     myElevator->door_open = d_o;
     myElevator->destination = dest;
@@ -35,8 +36,16 @@ void updateElevatorDestination(Elevator* myElevator) {
     }
     // If there was a cab order, serve it
     if(destinationFloor != -1) {
+        printf("To be removed: [%d][%d] \n", destinationFloor, buttonNumber);
+        for(int i = 0; i < N_FLOORS; i++) {
+            for(int j = 0; j < N_BUTTONS; j++) {
+                printf("%d ", myElevator->orders[i][j]);
+            }
+            printf("\n");
+        }
         myElevator->destination = destinationFloor;
-        myElevator->orders[destinationFloor][BUTTON_CAB] = 0; // Clears the order
+        myElevator->orders[destinationFloor][buttonNumber] = 0; // Clears the order
+        printf("Destination updated: %d\n", myElevator->destination);
         return; // Exits function if destination was found
     }
 
@@ -61,10 +70,19 @@ void updateElevatorDestination(Elevator* myElevator) {
             
         }
         if(destinationFloor != -1 && buttonNumber != -1) {
+                printf("To be removed: [%d][%d] \n", destinationFloor, buttonNumber);
+                for(int i = 0; i < N_FLOORS; i++) {
+                    for(int j = 0; j < N_BUTTONS; j++) {
+                        printf("%d ", myElevator->orders[i][j]);
+                    }
+                    printf("\n");
+                }
                 myElevator->destination = destinationFloor;
                 myElevator->orders[destinationFloor][buttonNumber] = 0; // Clears
+                printf("Destination updated: %d\n this is zero: %d", myElevator->destination, myElevator->orders[destinationFloor][buttonNumber]);
         }
     }
+    
 }
 
 
