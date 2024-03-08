@@ -5,4 +5,4 @@ for så å legge det til igjen i order arrayet. Da sitter vi igjen med en duplik
 
 Løsninger:
 
-1: fjerne orderen fra ordersarrayet
+1: Vi må fjerne orderen fra ordersarrayet SKIKKELIG, ikke bare når destinasjonen lagres.

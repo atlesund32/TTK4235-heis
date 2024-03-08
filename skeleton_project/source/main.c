@@ -40,7 +40,6 @@ int main(){
                     myElevator.orders[f][b] = btnPressed;
                     elevio_buttonLamp(f, b, btnPressed);
                     printf("floor: %d, button %d, moving: %d\n", f, b, myElevator.moving);
-                    
                     nanosleep(&(struct timespec){0, 10*1000*1000}, NULL);
                     
                 }
