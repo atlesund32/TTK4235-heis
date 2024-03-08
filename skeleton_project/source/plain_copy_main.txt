@@ -39,8 +39,6 @@ int main(){
                 if(btnPressed){
                     myElevator.orders[f][b] = btnPressed;
                     elevio_buttonLamp(f, b, btnPressed);
-                    printf("Button pressed: floor: %d, button %d\n", f, b);
-                    printf("Moving direction: %d\n", myElevator.moving);
                 }
                 
             }
@@ -52,14 +50,14 @@ int main(){
             
             updateElevatorDestination(&myElevator);
         }
+        elevator_last_floor(&myElevator);
         // Run elevator to its destination if it has one. Doesn't react if destination is -1
         // Controls the motor direction of the elevator object
-        elevator_go_to_destination(&myElevator, &timer_started);
+        elevator_go_to_destination(&myElevator);
 
         int temp_floor = elevio_floorSensor();
         //if the elevator is at a floor and the floor has an order in the same direction, the elevator will stop
         if(temp_floor != -1){
-
             checkIntermediateStops(&myElevator, temp_floor, &timer_started, &timer);
         }
 
