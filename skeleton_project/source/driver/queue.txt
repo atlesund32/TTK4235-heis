@@ -26,12 +26,17 @@ void elevator_go_to_destination(Elevator* myElevator, int* timer_started){
 
 }
 
+// void elevator_stop_destination(int destination, int last_floor){
+//     if(destination == last_floor){
+//         elevio_motorDirection(DIRN_STOP);
+        
+//     }
+// }
 
 
 void elevator_last_floor(Elevator* myElevator){
     if(elevio_floorSensor() != -1){
         myElevator->last_floor = elevio_floorSensor();
-        elevio_floorIndicator(myElevator->last_floor);
     }
 }
 
@@ -45,37 +50,29 @@ void checkIntermediateStops(Elevator* myElevator, int floor, int* timer_started,
             //Another if statement to check if the elevator is moving in the same direction as the person wants to go
             if((myElevator->moving == 0 )&& b == 0){
                 elevio_motorDirection(DIRN_STOP);
+                myElevator->moving = 0;
                 printf("Door open up\n");
                 door_open(myElevator, timer_started, timer);
-
-                for(int i = 0; i < N_BUTTONS; i++){
-                    myElevator->orders[floor][i] = 0;
-                    myElevator->orders_processed[floor][i] = 0;
-                }
                 
             }
             else if((myElevator->moving == 1) && b == 1){ 
                 elevio_motorDirection(DIRN_STOP);
+                myElevator->moving = 1;
                 printf("Door open down\n");
                 door_open(myElevator, timer_started, timer);
-                
-                for(int i = 0; i < N_BUTTONS; i++){
-                    myElevator->orders[floor][i] = 0;
-                    myElevator->orders_processed[floor][i] = 0;
-                }
+
 
             }
             if(b == 2){
                 elevio_motorDirection(DIRN_STOP);
+                myElevator->moving = 2;
                 printf("Door open cab\n");
                 door_open(myElevator, timer_started, timer);
 
-                for(int i = 0; i < N_BUTTONS; i++){
-                    myElevator->orders[floor][i] = 0;
-                    myElevator->orders_processed[floor][i] = 0;
-                }
             }
-            
+            for(int i = 0; i < N_BUTTONS; i++){
+                myElevator->orders[floor][i] = 0;
+            }
             
         }
     }

@@ -11,6 +11,7 @@ void elevator_init(Elevator* myElevator, int start_floor, int dest, int d_o){
     for(int i = 0; i < N_FLOORS; i++) {
         for(int j = 0; j < N_BUTTONS; j++) {
             myElevator->orders[i][j] = 0;
+            myElevator->orders_processed[i][j] = 0;
         }
     }
 
@@ -79,7 +80,7 @@ void updateElevatorDestination(Elevator* myElevator) {
                 }
                 myElevator->destination = destinationFloor;
                 myElevator->orders[destinationFloor][buttonNumber] = 0; // Clears
-                printf("Destination updated: %d\n this is zero: %d", myElevator->destination, myElevator->orders[destinationFloor][buttonNumber]);
+                printf("Destination updated: %d\n this is zero: %d \n", myElevator->destination, myElevator->orders[destinationFloor][buttonNumber]);
         }
     }
     

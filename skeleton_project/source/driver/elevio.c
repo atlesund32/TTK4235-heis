@@ -69,16 +69,6 @@ void elevio_buttonLamp(int floor, ButtonType button, int value){
 }
 
 //Setter etasjelyset
-//floor = hvilken etasje lyset skal settes i
-//value = 1 setter på lyset
-//value = 0 setter av lyset
-//value = 2 setter av lyset og døren åpen
-//value = 3 setter av lyset og døren lukket
-//value = 4 setter av lyset og døren i bevegelse
-//value = 5 setter av lyset og heisen i nødstopp
-//value = 6 setter av lyset og heisen i nødstopp og døren åpen
-//value = 7 setter av lyset og heisen i nødstopp og døren lukket
-//value = 8 setter av lyset og heisen i nødstopp og døren i bevegelse
 void elevio_floorIndicator(int floor){
     assert(floor >= 0);
     assert(floor < N_FLOORS);

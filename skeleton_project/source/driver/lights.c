@@ -7,7 +7,7 @@ void order_lights(Elevator* myElevator){
             if(myElevator->orders[f][b]){
                 elevio_buttonLamp(f, b, 1);
             }
-            else{
+            else if(myElevator->orders[f][b] == 0 && myElevator->door_open == 1){
                 elevio_buttonLamp(f, b, 0);
             }
         }

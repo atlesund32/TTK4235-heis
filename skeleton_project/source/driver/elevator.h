@@ -7,6 +7,7 @@ typedef struct {
     int moving; // 0 = moving up, 1 = moving down, 2 = stop
     int last_floor;
     int orders[N_FLOORS][N_BUTTONS]; //hall up. hall down, cab
+    int orders_processed[N_FLOORS][N_BUTTONS];
     int door_open; //0 = closed, 1 = open
     int door_obstruction; //0 = no obstruction, 1 = obstruction
 } Elevator;
