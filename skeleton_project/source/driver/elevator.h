@@ -1,28 +1,25 @@
 #pragma once
 #include "elevio.h"
 
-
-typedef struct {
+typedef struct
+{
     int destination;
     int moving; // 0 = moving up, 1 = moving down, 2 = stop
     int last_floor;
-    int orders[N_FLOORS][N_BUTTONS]; //hall up. hall down, cab
+    int orders[N_FLOORS][N_BUTTONS]; // hall up. hall down, cab
     int orders_processed[N_FLOORS][N_BUTTONS];
-    int door_open; //0 = closed, 1 = open
-    int door_obstruction; //0 = no obstruction, 1 = obstruction
+    int door_open;        // 0 = closed, 1 = open
+    int door_obstruction; // 0 = no obstruction, 1 = obstruction
+    int last_direction;   // 0 = up, 1 = down
 } Elevator;
-
 
 // orders[
 //     [0, 0, 0],
 //     [0, 0, 0],
 //     [0, 0, 0],
 //     [0, 0, 0]
-//] 
+//]
 
+void elevator_init(Elevator *elevator, int start_floor, int dest, int d_o);
 
-
-
-void elevator_init(Elevator* elevator, int start_floor, int dest, int d_o);
-
-void updateElevatorDestination(Elevator* myElevator);
+void updateElevatorDestination(Elevator *myElevator);
